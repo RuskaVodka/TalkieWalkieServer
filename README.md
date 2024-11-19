@@ -1,0 +1,1 @@
+Pocetna verzija servera
