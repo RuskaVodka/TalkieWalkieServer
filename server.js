@@ -14,11 +14,21 @@ wss.on('connection', ws => {
       console.log('Received audio data');
       // Broadcast the audio data to all connected clients (your other walkie-talkies)
       wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
+        if (client.readyState === WebSocket.OPEN && client !== ws) {
           client.send(message);  // Send the audio data to the other clients
         }
       });
     }
+  });
+
+  // Handle client disconnects
+  ws.on('close', () => {
+    console.log('A client disconnected');
+  });
+
+  // Handle errors
+  ws.on('error', (error) => {
+    console.log('WebSocket error:', error);
   });
 
   // Send a welcome message to the client when they connect
